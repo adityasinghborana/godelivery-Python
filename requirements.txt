@@ -4,3 +4,4 @@ pyrebase
 django-cors-headers
 firebase_admin
 psycopg2
+gdal
