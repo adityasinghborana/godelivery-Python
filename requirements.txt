@@ -3,3 +3,4 @@ djangorestframework
 pyrebase
 django-cors-headers
 firebase_admin
+psycopg2
