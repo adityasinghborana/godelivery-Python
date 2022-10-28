@@ -87,12 +87,12 @@ WSGI_APPLICATION = 'deliveree_go.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'delivereego_db',
-        'USER':'postgres',
-        'PASSWORD':'12345',
+        'USER':'admin',
+        'PASSWORD':'admin',
         'HOST':'127.0.0.1',
-        'PORT':'5432'
+        'PORT':'3306'
     }
     # 'default': {
     #     'ENGINE': 'django.contrib.gis.db.backends.postgis',
