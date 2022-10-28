@@ -88,10 +88,10 @@ WSGI_APPLICATION = 'deliveree_go.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'delivereego_db',
+        'NAME': 'godelivery',
         'USER':'admin',
         'PASSWORD':'admin',
-        'HOST':'127.0.0.1',
+        'HOST':'44.206.142.237',
         'PORT':'3306'
     }
     # 'default': {
