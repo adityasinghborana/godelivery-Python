@@ -3,8 +3,3 @@ djangorestframework
 pyrebase
 django-cors-headers
 firebase_admin
-psycopg2
-gdal
-gdal-bin
-libgdal-dev
-GDAL==3.3.2
