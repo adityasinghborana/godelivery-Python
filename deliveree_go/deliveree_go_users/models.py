@@ -1,4 +1,4 @@
-from django.contrib.gis.db import models
+from django.db import models
 
 class users(models.Model):
     userid = models.AutoField(primary_key=True)
@@ -23,7 +23,7 @@ class user_locations(models.Model):
     landmark = models.CharField(max_length=200)
     postalcode = models.CharField(max_length=20)
     location = models.TextField()
-    the_geom= models.GeometryField()
+    # the_geom= models.GeometryField()
     created_on = models.CharField(max_length=300,default='')
     modified_on = models.CharField(max_length=300,default='')
     class Meta:
@@ -64,7 +64,7 @@ class shops_list(models.Model):
     # images = models.FileField(upload_to=shopImage_directory_path)
     address = models.TextField(default='')
     location = models.TextField()
-    the_geom = models.GeometryField()
+    # the_geom = models.GeometryField() 
     created_on = models.CharField(max_length=300,default='')
     modified_on = models.CharField(max_length=300,default='')
 
@@ -122,3 +122,17 @@ class addratings(models.Model):
     rating = models.IntegerField()
     reviews = models.TextField(default='')
     created_on = models.CharField(max_length=200)
+
+
+class cart_list(models.Model):
+    cart_id = models.AutoField(primary_key=True)
+    uid = models.CharField(max_length=200)
+    user_id = models.IntegerField()
+    item_id = models.IntegerField()
+    shop_id = models.IntegerField()
+    address_id = models.IntegerField()
+    item_price = models.CharField(max_length=20)
+    total_item = models.IntegerField()
+    created_on = models.CharField(max_length=200)
+    modified_on = models.CharField(max_length=200,default='')
+

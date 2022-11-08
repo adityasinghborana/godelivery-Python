@@ -1,5 +1,8 @@
 django
 djangorestframework
-pyrebase
+Pyrebase4
 django-cors-headers
 firebase_admin
+# mysqlclient
+# psycopg2
+mysqlclient

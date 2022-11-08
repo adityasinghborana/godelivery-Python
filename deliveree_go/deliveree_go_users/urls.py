@@ -7,5 +7,6 @@ urlpatterns = [
     path('home_pageApi',viewsets.home_pageApi.as_view()),
     path('itemsListData',viewsets.itemsListData.as_view()),
     path('shopsListData',viewsets.shopsListData.as_view()),
+    path('cart_list',viewsets.cart_list.as_view()),
     
 ]
