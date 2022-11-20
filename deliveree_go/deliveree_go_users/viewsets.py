@@ -307,7 +307,7 @@ class addressAfterLogin(APIView):
                 locations_data = []
                 for location in data:
                     locations_data.append(location['fields'])
-                return Response({'data':locations_data,"status":"PASS","message":"Successfully address fetched"},status=status.HTTP_201_CREATED) 
+                return Response({'data':locations_data,"status":" ","message":"Successfully address fetched"},status=status.HTTP_201_CREATED) 
             else:
                 return Response({"data":"","status":"FAIL","message":"Invalid Authorization token"})
         except Exception as e:
