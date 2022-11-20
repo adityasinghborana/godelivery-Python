@@ -157,7 +157,8 @@ class cart_list(APIView):
                 shop_id = request.data.get('shop_id')
                 address_id = request.data.get('address_id')
                 item_price = request.data.get('item_price')
-                addCart = models.cart_list.objects.create(uid=uid,user_id=user_id,item_id=item_id,shop_id=shop_id,address_id=address_id,item_price=item_price,created_on=current_date,modified_on=current_date)
+                total_item = request.data.get('total_item')
+                addCart = models.cart_list.objects.create(uid=uid,user_id=user_id,item_id=item_id,shop_id=shop_id,address_id=address_id,item_price=item_price,created_on=current_date,modified_on=current_date,total_item=total_item)
                 if addCart:
                     return Response({"data":True,"status":"PASS","message":"successfully data added to cart"})
                 else:

@@ -132,7 +132,7 @@ class cart_list(models.Model):
     shop_id = models.IntegerField()
     address_id = models.IntegerField()
     item_price = models.CharField(max_length=20)
-    total_item = models.IntegerField()
+    total_item = models.IntegerField(null=True)
     created_on = models.CharField(max_length=200)
     modified_on = models.CharField(max_length=200,default='')
 
