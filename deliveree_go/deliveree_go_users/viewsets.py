@@ -139,6 +139,8 @@ class itemsListData(APIView):
             msg = getExceptionData(e)
             return Response({"data":msg},status=status.HTTP_400_BAD_REQUEST)
 
+
+
 class cart_list(APIView):
     def post(self,request):
         try:
@@ -146,7 +148,11 @@ class cart_list(APIView):
             user = verifyfirebaseAuth(request)
             if user:
                 uid = user.uid
-                user_id = request.data.get('user_id')
+                getUser = models.users.objects.filter(uid=uid).values('userid')
+                if getUser:
+                    user_id = getUser[0]['userid']
+                else:
+                    user_id = request.data.get('user_id')
                 item_id = request.data.get('item_id')
                 shop_id = request.data.get('shop_id')
                 address_id = request.data.get('address_id')
@@ -280,16 +286,33 @@ class addressAfterLogin(APIView):
             saveData = models.user_locations.objects.create(address_type=address_type,house_flat=house_flat,road_area=road_area,landmark=landmark,postalcode=postalcode,location=location,email=email,uid=uid,userid=userid,created_on=current_date,modified_on=current_date)
             if saveData:
                 data = models.user_locations.objects.filter(address_id=saveData.address_id)
-                data = serialize('json',data)
-                return Response({'data':data,"message":"Successfully address Saved"},status=status.HTTP_201_CREATED)
+                data = json.loads(serialize('json',data))
+                locations_data = []
+                for location in data:
+                    locations_data.append(location['fields'])
+                return Response({'data':locations_data,"status":"PASS","message":"Successfully address Saved and fetched"},status=status.HTTP_201_CREATED)
             else:
                 return Response({'data':'',"message":"Failed address Saved"},status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             msg = getExceptionData(e)
             return Response({"data":msg},status=status.HTTP_400_BAD_REQUEST)
 
-
-
+    def get(self,request):
+        try:
+            user = verifyfirebaseAuth(request)
+            if user:
+                uid = user.uid
+                data = models.user_locations.objects.filter(uid=uid)
+                data = json.loads(serialize('json',data))
+                locations_data = []
+                for location in data:
+                    locations_data.append(location['fields'])
+                return Response({'data':locations_data,"status":"PASS","message":"Successfully address fetched"},status=status.HTTP_201_CREATED) 
+            else:
+                return Response({"data":"","status":"FAIL","message":"Invalid Authorization token"})
+        except Exception as e:
+            msg = getExceptionData(e)
+            return Response({"data":msg},status=status.HTTP_400_BAD_REQUEST)
 
 ##VENDORS : 
 
