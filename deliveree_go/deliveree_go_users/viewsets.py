@@ -332,9 +332,10 @@ class ItemData(APIView):
             item_price = request.data.get('item_price')
             something_extra = request.data.get('something_extra')
             category_id = request.data.get('category_id')
-            category_type =request.data.get('category_type')
             images = dict((request.data).lists())['images']
-            saveItemData = models.items_list.objects.create(shop_id=shop_id,item_name=item_name,item_type=item_type,category_id=category_id,category_type=category_type,item_price=item_price,something_extra=something_extra,created_on=current_date,modified_on=current_date)
+            getCateory = models.category_types.objects.filter(category_id=category_id).values('category_name')
+            category_name = getCateory[0]['category_name']
+            saveItemData = models.items_list.objects.create(shop_id=shop_id,item_name=item_name,item_type=item_type,category_id=category_id,category_type=category_name,item_price=item_price,something_extra=something_extra,created_on=current_date,modified_on=current_date)
             if saveItemData:
                 item_id = saveItemData.item_id
                 if images:
