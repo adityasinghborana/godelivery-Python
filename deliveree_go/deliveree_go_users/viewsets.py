@@ -116,25 +116,28 @@ class itemsListData(APIView):
     def get(self,request):
         try:
             user = verifyfirebaseAuth(request)
-            uid = user.uid
-            user_id = request.data.get('user_id')
-            category_id = request.data.get('category_id')
-            shop_id = request.data.get('shop_id')
-            item_type = request.data.get('item_type')
-            searchfilter = request.data.get('searchfilter')
-            if item_type:
-                getItemsData = models.items_list.objects.filter(item_type=item_type)
-            elif searchfilter:
-                getItemsData = models.items_list.objects.filter(item_name__contains=searchfilter,item_type__contains=searchfilter)
+            if user:
+                uid = user.uid
+                user_id = self.request.query_params.get('user_id')
+                category_id = self.request.query_params.get('category_id')
+                shop_id = self.request.query_params.get('shop_id')
+                item_type = self.request.query_params.get('item_type')
+                searchfilter = self.request.query_params.get('searchfilter')
+                if item_type:
+                    getItemsData = models.items_list.objects.filter(item_type=item_type)
+                elif searchfilter:
+                    getItemsData = models.items_list.objects.filter(item_name__contains=searchfilter,item_type__contains=searchfilter)
+                else:
+                    getItemsData = models.items_list.objects.filter(shop_id=shop_id)
+                getItemsData = json.loads(serialize('json',getItemsData))
+                item_lists = []
+                if getItemsData:
+                    for items in getItemsData:
+                        items['fields']['item_id'] = items['pk']
+                        item_lists.append(items['fields'])
+                return Response({"data":item_lists,"status":"PASS","message":"Successfully fetched items data"})
             else:
-                getItemsData = models.items_list.objects.filter(shop_id=shop_id)
-            getItemsData = json.loads(serialize('json',getItemsData))
-            item_lists = []
-            if getItemsData:
-                for items in getItemsData:
-                    items['fields']['item_id'] = items['pk']
-                    item_lists.append(items['fields'])
-            return Response({"data":item_lists,"status":"PASS","message":"Successfully fetched items data"})
+                return Response({"data":"","status":"FAIL","message":"Invalid Authorization token"})
         except Exception as e:
             msg = getExceptionData(e)
             return Response({"data":msg},status=status.HTTP_400_BAD_REQUEST)
@@ -158,6 +161,8 @@ class cart_list(APIView):
                 address_id = request.data.get('address_id')
                 item_price = request.data.get('item_price')
                 total_item = request.data.get('total_item')
+                if not total_item:
+                    total_item = 1
                 addCart = models.cart_list.objects.create(uid=uid,user_id=user_id,item_id=item_id,shop_id=shop_id,address_id=address_id,item_price=item_price,created_on=current_date,modified_on=current_date,total_item=total_item)
                 if addCart:
                     return Response({"data":True,"status":"PASS","message":"successfully data added to cart"})
@@ -195,7 +200,7 @@ class cart_list(APIView):
             if user:
                 uid = user.uid
                 user_id = request.data.get('user_id')
-                getCart = models.cart_list.objects.filter(uid=uid,user_id=user_id)
+                getCart = models.cart_list.objects.filter(uid=uid)
                 getCart = json.loads(serialize('json',getCart))
                 cart_lists = []
                 final_response = {}
@@ -316,6 +321,31 @@ class addressAfterLogin(APIView):
             return Response({"data":msg},status=status.HTTP_400_BAD_REQUEST)
 
 ##VENDORS : 
+class ItemData(APIView):
+    def post(self,request):
+        try:
+
+            current_date = int(datetime.timestamp(datetime.now())) * 1000
+            shop_id = request.data.get('shop_id')
+            item_name = request.data.get('item_name')
+            item_type = request.data.get('item_type')
+            item_price = request.data.get('item_price')
+            something_extra = request.data.get('something_extra')
+            category_id = request.data.get('category_id')
+            category_type =request.data.get('category_type')
+            images = dict((request.data).lists())['images']
+            saveItemData = models.items_list.objects.create(shop_id=shop_id,item_name=item_name,item_type=item_type,category_id=category_id,category_type=category_type,item_price=item_price,something_extra=something_extra,created_on=current_date,modified_on=current_date)
+            if saveItemData:
+                item_id = saveItemData.item_id
+                if images:
+                    for image in images:
+                        addImage = models.items_Images.objects.create(item_id=item_id,image=image,created_on=current_date)
+                return Response({"data":item_id,"message":"Successfully data saved"})
+            else:
+                return Response({"data":False,"message":"Failed in saving item data"},status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            msg = getExceptionData(e)
+            return Response({"data":msg},status=status.HTTP_400_BAD_REQUEST)
 
 class shopData(APIView):
     def post(self,request):
@@ -349,8 +379,9 @@ class shopData(APIView):
             a = save_shopdata
             
             ## insert images
-            for image in images:
-                addImage = models.shops_images.objects.create(shop_id=shop_id,image=image,created_on=current_date)
+            if images:
+                for image in images:
+                    addImage = models.shops_images.objects.create(shop_id=shop_id,image=image,created_on=current_date)
             
             return Response({"data":save_shopdata.shop_id})
         except Exception as e:

@@ -80,6 +80,18 @@ class shops_images(models.Model):
     class Meta():
         db_table = 'shops_images'   
 
+def itemImage_directory_path(instance, filename):
+    item_id = str(instance.item_id)
+    return 'media/item/{0}/{1}'.format((item_id), filename)
+
+class items_Images(models.Model):
+    image_id = models.AutoField(primary_key=True)
+    item_id = models.IntegerField()
+    image = models.FileField(upload_to=itemImage_directory_path)
+    created_on = models.CharField(max_length=200,default='')
+    
+    class Meta:
+        db_table = 'items_images'
 
 class items_list(models.Model):
     item_id = models.AutoField(primary_key=True)
