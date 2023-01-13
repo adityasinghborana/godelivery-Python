@@ -1,8 +1,8 @@
-django
-djangorestframework
-Pyrebase4
-django-cors-headers
-firebase_admin
+django==4.1.5
+djangorestframework==3.14.0
+Pyrebase4==4.6.0
+django-cors-headers==3.13.0
+firebase_admin==6.0.1
 # mysqlclient
 # psycopg2
-mysqlclient
+mysqlclient==2.1.1
