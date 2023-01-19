@@ -17,8 +17,6 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-GDAL_LIBRARY_PATH  = r"C:/OSGeo4W/bin/gdal305.dll"
-GEOS_LIBRARY_PATH  = r"C:/OSGeo4W/bin/geos_c.dll"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -29,7 +27,7 @@ SECRET_KEY = 'django-insecure-4^b9oq!y#vxtrg5@(3w6tdrn-hyvi!)6k#jf_ov!p2g&4!va+6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [*]
 
 
 # Application definition
@@ -41,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.gis',
     'corsheaders',
     'rest_framework',
     'deliveree_go_users',
