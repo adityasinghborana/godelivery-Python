@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-4^b9oq!y#vxtrg5@(3w6tdrn-hyvi!)6k#jf_ov!p2g&4!va+6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [*]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -88,7 +88,7 @@ DATABASES = {
         'NAME': 'godelivery',
         'USER':'admin',
         'PASSWORD':'admin',
-        'HOST':'44.206.142.237',
+        'HOST':'localhost',
         'PORT':'3306'
     }
     # 'default': {
